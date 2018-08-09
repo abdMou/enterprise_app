@@ -51,7 +51,25 @@ public class AdminPage extends AppCompatActivity {
         numbers = new ArrayList<String>();
         askForPermission(Manifest.permission.READ_PHONE_STATE, PHONESTATS);
         Intent intent = getIntent();
-        final String uuid = intent.getExtras().getString("uuid");
+        final String username=intent.getExtras().getString("admin_username");
+        final String[] uuid = {""};
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                String gettinginfosquery="{CALL admin_page(?,?)}";
+                CallableStatement cs= com.example.ik.myapplication.dbconnect.dbconnection().prepareCall(gettinginfosquery);
+                cs.setString(1,username);
+                cs.registerOutParameter(2,Types.VARCHAR);
+                cs.execute();
+
+                    uuid[0] =cs.getString(2);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
         final EditText new_username_put=(EditText) findViewById(R.id.input_username);
         final EditText new_password_put=(EditText) findViewById(R.id.input_password);
         final EditText new_password2_put=(EditText) findViewById(R.id.input_password2);
@@ -148,6 +166,7 @@ public class AdminPage extends AppCompatActivity {
                                                         CNIL password=new CNIL(new_password_put.getText().toString());
                                                         if(password.check_CNIL()){
                                                             Intent check = new Intent(getApplicationContext(), CheckAdmin.class);
+                                                            check.putExtra("admin_username",username);
                                                             check.putExtra("username_modify", new_username_put.getText().toString());
 
                                                             check.putExtra("password_modify", new_password_put.getText().toString());
@@ -192,7 +211,8 @@ public class AdminPage extends AppCompatActivity {
         });
         Button AdminLogout=(Button) findViewById(R.id.admin_logout );
         // LOGOUT ADMIN
-            AdminLogout.setOnClickListener(new View.OnClickListener(){
+        final String finalUuid = uuid[0];
+        AdminLogout.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
                     new Thread(new Runnable() {
@@ -201,7 +221,7 @@ public class AdminPage extends AppCompatActivity {
                             try {
                                 String sqlquery="{Call drop_session(?)}";
                                 CallableStatement callableStatement=dbconnect.dbconnection().prepareCall(sqlquery);
-                                callableStatement.setString(1,uuid);
+                                callableStatement.setString(1, finalUuid);
                                 callableStatement.execute();
                             } catch (SQLException e) {
                                 e.printStackTrace();

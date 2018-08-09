@@ -53,6 +53,7 @@ public class CheckAdmin extends AppCompatActivity {
         int fromAccount = getIntent().getExtras().getInt("fromaccountlist");
         //-------------------------------------------------------------------------------------------------------
         if (fromAccount == 1) {
+            final String admin_username=getIntent().getExtras().getString("admin_username");
             username = getIntent().getExtras().getString("username");
             email = getIntent().getExtras().getString("email");
             statue = getIntent().getExtras().getString("statue");
@@ -181,6 +182,7 @@ public class CheckAdmin extends AppCompatActivity {
 
                                     Intent intent = new Intent(getApplicationContext(), AdminPage.class);
                                     Toast.makeText(getApplicationContext(), "Edited", Toast.LENGTH_LONG).show();
+                                    intent.putExtra("admin_username",admin_username);   
                                     startActivity(intent);
                                     finish();
                                 }
@@ -197,6 +199,7 @@ public class CheckAdmin extends AppCompatActivity {
 
         if (fromAccount == 2) {
             Toast.makeText(CheckAdmin.this, "2", Toast.LENGTH_SHORT).show();
+            final String admin_username=getIntent().getExtras().getString("admin_username");
 
             username = getIntent().getExtras().getString("username_admin_modify2");
             password = getIntent().getExtras().getString("password_admin_modify2");
@@ -330,11 +333,9 @@ public class CheckAdmin extends AppCompatActivity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            Account account = null;
                             try {
                                 dbconnect dbconnect=null;
 
-                                account = new Account(username, md5(password), email,salary, statueview.getSelectedItem().toString());
                                 String SQLQUERY="{CALL edit_user(?,?,?,?,?)}";
                                 CallableStatement statement=dbconnect.dbconnection().prepareCall(SQLQUERY);
                                 statement.setString(1,username.toLowerCase());
@@ -352,7 +353,7 @@ public class CheckAdmin extends AppCompatActivity {
                                 public void run() {
                                     Toast.makeText(CheckAdmin.this, "Successful Update", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getApplicationContext(), AdminPage.class);
-                                    Toast.makeText(getApplicationContext(), "Edited", Toast.LENGTH_LONG).show();
+                                    intent.putExtra("admin_username",admin_username);
                                     startActivity(intent);
                                     finish();
                                 }
@@ -366,6 +367,7 @@ public class CheckAdmin extends AppCompatActivity {
         // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         if (fromAccount != 1 && fromAccount != 2) {
+            final String admin_username=getIntent().getExtras().getString("admin_username");
             username = getIntent().getExtras().getString("username_modify");
             password = getIntent().getExtras().getString("password_modify");
             email = getIntent().getExtras().getString("email_modify");
@@ -425,6 +427,7 @@ public class CheckAdmin extends AppCompatActivity {
                                 public void run() {
                                     Toast.makeText(CheckAdmin.this, "Successful Registration", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getApplicationContext(), AdminPage.class);
+                                    intent.putExtra("admin_username",admin_username);
                                     startActivity(intent);
                                     finish();
                                 }

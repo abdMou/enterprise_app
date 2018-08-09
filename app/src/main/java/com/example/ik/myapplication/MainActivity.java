@@ -120,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
                                                 if(finalAllow ==1){
                                                     Intent intent = new Intent(getApplicationContext(), AdminPage.class);
                                                     Toast.makeText(MainActivity.this, "WELCOME TO ADMIN PAGE", Toast.LENGTH_LONG).show();
-                                                    intent.putExtra("uuid", finalUuid);
                                                     intent.putExtra("admin_username",input_username.getText().toString().toLowerCase());
                                                     startActivity(intent);
                                                     finish();
@@ -200,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
                                 final String finalStatue = statue;
                                 final int finalAllow = Allow;
                                 final String finalUuid = uuid;
+                                Log.e("uuid : ",uuid+" ... "+finalUuid);
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {

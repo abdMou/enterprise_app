@@ -37,7 +37,6 @@ public class ForgottenPassword extends AppCompatActivity {
                         int check_email = 0;
                         try {
                          Class.forName("com.mysql.jdbc.Driver");
-                         ArrayList<Account> account=new ArrayList<>();
                         dbconnect dbconnect = null;
                         String sqlquery="{CALL check_username_email_exits(?,?,?,?)}";
                         CallableStatement callableStatement=dbconnect.dbconnection().prepareCall(sqlquery);
