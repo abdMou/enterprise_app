@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             tools:context=".CheckAdmin">
+
+    <EditText
+            android:id="@+id/usernameview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="68dp"
+            android:hint="Username"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginStart="180dp"/>
+
+    <EditText
+            android:id="@+id/emailview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="E-mail"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="180dp" android:layout_marginTop="3dp"
+            app:layout_constraintTop_toBottomOf="@+id/passwordview2" android:layout_marginBottom="32dp"
+            app:layout_constraintBottom_toTopOf="@+id/salaryview" android:inputType="textEmailAddress"/>
+
+    <EditText
+            android:id="@+id/salaryview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="Salary"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/emailview" android:layout_marginStart="180dp"
+            android:inputType="number"/>
+
+    <Button
+            android:id="@+id/modify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Modify"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.89"/>
+
+    <Button
+            android:id="@+id/admin_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="Register and Enter new user"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+    <TextView
+            android:text="Confirm User"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/confim_update" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="16dp"
+            app:layout_constraintHorizontal_bias="0.498" android:textSize="24sp"/>
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/passwordview" android:layout_marginTop="32dp"
+            app:layout_constraintTop_toBottomOf="@+id/usernameview" android:hint="Password"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintHorizontal_bias="0.957" android:inputType="textPassword"/>
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/passwordview2"
+            android:hint="2nd Password"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintHorizontal_bias="0.957" android:layout_marginTop="32dp"
+            app:layout_constraintTop_toBottomOf="@+id/passwordview" android:layout_marginBottom="32dp"
+            app:layout_constraintBottom_toTopOf="@+id/emailview" android:inputType="textPassword"/>
+    <Spinner
+            android:layout_width="224dp"
+            android:layout_height="40dp"
+            android:id="@+id/statue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="140dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="160dp"
+            android:layout_marginEnd="-50dp"/>
+    <TextView
+            android:text="Password :"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView10" android:textSize="18sp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="36dp" android:layout_marginBottom="55dp"
+            app:layout_constraintBottom_toTopOf="@+id/textView13"/>
+    <TextView
+            android:text="2nd Password :"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView13" android:textSize="18sp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="36dp" android:layout_marginBottom="56dp"
+            app:layout_constraintBottom_toTopOf="@+id/textView12"/>
+    <TextView
+            android:text="E-mail :"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView12" android:textSize="18sp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="36dp" android:layout_marginBottom="32dp"
+            app:layout_constraintBottom_toTopOf="@+id/textView11"/>
+    <TextView
+            android:text="Salary :"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView11" android:textSize="18sp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="36dp" android:layout_marginBottom="36dp"
+            app:layout_constraintBottom_toTopOf="@+id/textView15"/>
+    <TextView
+            android:text="Statue :"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView15" android:textSize="18sp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp" app:layout_constraintEnd_toStartOf="@+id/statue"
+            android:layout_marginEnd="8dp" app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="148dp" app:layout_constraintHorizontal_bias="0.222"/>
+    <TextView
+            android:text="Username :"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView14" android:textSize="18sp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="36dp"
+            app:layout_constraintBottom_toTopOf="@+id/textView10" android:layout_marginBottom="52dp"/>
+
+
+</android.support.constraint.ConstraintLayout>

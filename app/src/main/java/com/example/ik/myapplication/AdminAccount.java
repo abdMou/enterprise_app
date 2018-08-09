@@ -1,0 +1,18 @@
+package com.example.ik.myapplication;
+
+public class AdminAccount {
+    private String username;
+    private String password;
+    public AdminAccount(String username,String password){
+        this.username=username;
+        this.password=password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+}
