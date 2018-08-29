@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Aug 29, 2018 at 12:06 PM
+-- Generation Time: Aug 29, 2018 at 12:24 PM
 -- Server version: 5.7.21
 -- PHP Version: 7.2.4
 
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   PRIMARY KEY (`ID`),
   UNIQUE KEY `UUID` (`UUID`),
   UNIQUE KEY `accounts_UUID_uindex` (`UUID`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `accounts`
@@ -53,11 +53,12 @@ CREATE TABLE IF NOT EXISTS `accounts` (
 
 INSERT INTO `accounts` (`UUID`, `ID`, `Username`, `Password`, `Email`, `Salary`, `Statue`, `RegistrationDate`, `Usertype`, `State`) VALUES
 ('c61e6442-ef64-4cc3-ac99-1ddcccdd3bd8', 1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'null', 'null', 'null', 'null', 'A', 1),
-('8b9ed3d1-9b23-11e8-880a-0a0027000012', 5, 'rami', 'a7cd345c00ad379d0b665b72a0bb1a90', 'Borni@rami.com', '526330', 'Abandoned', '2018-08-08 03:55:59 PM', 'U', 1),
-('ad625da7-9bd1-11e8-b984-0a0027000012', 6, 'test', 'a7cd345c00ad379d0b665b72a0bb1a90', 'test@test.com', '0', 'Active', '2018-08-09 12:42:28 PM', 'U', 1),
+('8b9ed3d1-9b23-11e8-880a-0a0027000012', 5, 'rami', 'a7cd345c00ad379d0b665b72a0bb1a90', 'Borni@rami.com', '526330', 'Abandoned', '2018-08-08 03:55:59 PM', 'U', 0),
+('ad625da7-9bd1-11e8-b984-0a0027000012', 6, 'test', 'a7cd345c00ad379d0b665b72a0bb1a90', 'test@test.com', '0', 'Active', '2018-08-09 12:42:28 PM', 'U', -1),
 ('662108a3-9bd2-11e8-b984-0a0027000012', 7, 'test25', 'a7cd345c00ad379d0b665b72a0bb1a90', 'rami@test.com', '0', 'Active', '2018-08-09 12:47:38 PM', 'U', 0),
-('09590699-9bd4-11e8-b984-0a0027000012', 9, 'test754', 'a7cd345c00ad379d0b665b72a0bb1a90', 'tt@tt.tt', '0', 'Active', '2018-08-09 12:59:22 PM', 'U', 1),
-('5425c254-1973-4530-b324-e37bc00512d8', 10, 'test5520', 'a7cd345c00ad379d0b665b72a0bb1a90', 'ttt@tt.tt', '0', 'Active', '2018-08-14 11:51:06 AM', 'U', 1);
+('09590699-9bd4-11e8-b984-0a0027000012', 9, 'test754', 'a7cd345c00ad379d0b665b72a0bb1a90', 'tt@tt.tt', '0', 'Active', '2018-08-09 12:59:22 PM', 'U', 0),
+('5425c254-1973-4530-b324-e37bc00512d8', 10, 'test5520', 'a7cd345c00ad379d0b665b72a0bb1a90', 'ttt@tt.tt', '0', 'Active', '2018-08-14 11:51:06 AM', 'U', 1),
+('3c88ba68-ab85-11e8-89e4-0a0027000012', 11, 'rrrr', 'af8c45e090ec1ef5ea172a942b70aacc', 'rr@rr.rr', '0', 'Active', '2018-08-29 12:15:36 PM', 'U', 1);
 
 -- --------------------------------------------------------
 
@@ -73,7 +74,14 @@ CREATE TABLE IF NOT EXISTS `sessions` (
   `IP` varchar(50) NOT NULL,
   `LoginDate` varchar(100) NOT NULL,
   PRIMARY KEY (`login_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `sessions`
+--
+
+INSERT INTO `sessions` (`login_id`, `UserID`, `IMEI`, `IP`, `LoginDate`) VALUES
+(3, 'c61e6442-ef64-4cc3-ac99-1ddcccdd3bd8', '358240051111110', '0', '2018-08-29 12:14:15 PM');
 
 -- --------------------------------------------------------
 
@@ -90,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `users_login_log` (
   `Login_Date` varchar(50) NOT NULL,
   `Logout_Date` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users_login_log`
@@ -180,7 +188,9 @@ INSERT INTO `users_login_log` (`id`, `UserID`, `IMEI`, `IP`, `Login_Date`, `Logo
 (87, 'c61e6442-ef64-4cc3-ac99-1ddcccdd3bd8', '358240051111110', '0', '2018-08-14 11:49:29 AM', '2018-08-14 16:49:33'),
 (88, 'c61e6442-ef64-4cc3-ac99-1ddcccdd3bd8', '358240051111110', '0', '2018-08-14 11:52:52 AM', '2018-08-26 18:37:25'),
 (89, 'c61e6442-ef64-4cc3-ac99-1ddcccdd3bd8', '358240051111110', 'OFFLINE', '2018-08-28 10:51:04 AM', '2018-08-28 10:51:17 AM'),
-(90, 'c61e6442-ef64-4cc3-ac99-1ddcccdd3bd8', '358240051111110', '0', '2018-08-28 02:02:07 PM', '2018-08-28 16:46:46');
+(90, 'c61e6442-ef64-4cc3-ac99-1ddcccdd3bd8', '358240051111110', '0', '2018-08-28 02:02:07 PM', '2018-08-28 16:46:46'),
+(91, '8b9ed3d1-9b23-11e8-880a-0a0027000012', '358240051111110', '0', '2018-08-29 12:12:07 PM', '2018-08-29 13:12:13'),
+(92, '8b9ed3d1-9b23-11e8-880a-0a0027000012', '358240051111110', '0', '2018-08-29 12:12:33 PM', '2018-08-29 13:12:47');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
