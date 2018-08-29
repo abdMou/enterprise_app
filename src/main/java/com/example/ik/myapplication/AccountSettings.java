@@ -43,7 +43,7 @@ public class AccountSettings extends AppCompatActivity {
                      callableStatement.registerOutParameter(3,Types.VARCHAR);
 
                      callableStatement.execute();
-                     if(callableStatement.getString(2)!=null){
+                     if(callableStatement.getString(2)!=null && callableStatement.getInt(3)!=-1){
                          username.add(callableStatement.getString(2));
                          state.add(callableStatement.getInt(3));
                      }

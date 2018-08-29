@@ -101,13 +101,14 @@ public class Account_state_adapter extends ArrayAdapter {
                                             statement=dbconnect.dbconnection().prepareCall(sqlquery);
                                             statement.setString(1,username.get(position));
                                             statement.execute();
+                                            /*
                                             sqlquery=("{CALL put_in_journal(?,?,?,?)}");
                                             statement=dbconnect.dbconnection().prepareCall(sqlquery);
                                             statement.setString(1,admin_uuid);
                                             statement.setString(2,"DELETE");
                                             statement.setString(3,uuid);
                                             statement.setString(4,"");
-                                            statement.execute();
+                                            statement.execute();*/
                                             context.runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
