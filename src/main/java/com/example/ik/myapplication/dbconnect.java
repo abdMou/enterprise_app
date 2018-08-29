@@ -9,9 +9,11 @@ public class dbconnect {
     private static String password;
     private static String mysql;
     public static Connection dbconnection() throws SQLException {
-        mysql="jdbc:mysql://10.0.2.2:3306/enterprise";
+        mysql="jdbc:mysql://10.0.2.2:3306/enterprise?connectTimeout=4000";
         username="root";
         password="borni2019";
-        return DriverManager.getConnection(mysql,username,password);
+
+            return DriverManager.getConnection(mysql,username,password);
+
     }
 }

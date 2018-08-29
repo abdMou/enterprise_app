@@ -12,9 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.sql.*;
-import java.util.ArrayList;
 
-public class ForgottenPassword extends AppCompatActivity {
+public class ForgottenPasswordActivity extends AppCompatActivity {
     EditText username,email;
     TextView wrong;
     Button reset;
@@ -67,7 +66,7 @@ public class ForgottenPassword extends AppCompatActivity {
                             public void run() {
 
                                 if(finalCheck_username ==0 && finalCheck_email ==0){
-                                    Intent intent=new Intent(ForgottenPassword.this,PutNewPassword.class);
+                                    Intent intent=new Intent(ForgottenPasswordActivity.this,PutNewPassword.class);
                                     intent.putExtra("username",username.getText().toString().toLowerCase());
                                     startActivity(intent);
                                     finish();

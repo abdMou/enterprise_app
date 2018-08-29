@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 
+import java.lang.reflect.Type;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -14,8 +16,7 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-//JUST ONE PART DONE !
+import java.util.UUID;
 
 
 public class CheckAdmin extends AppCompatActivity {
@@ -51,6 +52,11 @@ public class CheckAdmin extends AppCompatActivity {
         modify = (Button) findViewById(R.id.modify);
         Intent intent = getIntent();
         int fromAccount = getIntent().getExtras().getInt("fromaccountlist");
+        String offline_or_online = "ONLINE";
+        offline_or_online = intent.getExtras().getString("offline_online");
+        final String uuid=intent.getExtras().getString("uuid");
+        final String admin_uuid=intent.getExtras().getString("uuid_admin");
+
         //-------------------------------------------------------------------------------------------------------
         if (fromAccount == 1) {
             final String admin_username=getIntent().getExtras().getString("admin_username");
@@ -85,8 +91,7 @@ public class CheckAdmin extends AppCompatActivity {
             emailview.setText(email);
             salaryview.setText(salary);
             final Button logout = (Button) findViewById(R.id.admin_logout);
-            logout.setText("Register");
-
+            logout.setText("Cancel");
             modify.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -155,6 +160,7 @@ public class CheckAdmin extends AppCompatActivity {
                                         check.putExtra("email_admin_modify2", email.toLowerCase());
                                         check.putExtra("salary_admin_modify2", salary);
                                         check.putExtra("statue_admin_modify2", statue);
+                                        check.putExtra("uuid_admin", admin_uuid);
                                         check.putExtra("fromaccountlist", 2);
                                         startActivity(check);
                                         finish();
@@ -178,27 +184,20 @@ public class CheckAdmin extends AppCompatActivity {
             logout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-
-                                    Intent intent = new Intent(getApplicationContext(), AdminPage.class);
-                                    Toast.makeText(getApplicationContext(), "Edited", Toast.LENGTH_LONG).show();
-                                    intent.putExtra("admin_username",admin_username);   
+                                    Intent intent = new Intent(getApplicationContext(), AccountSettings.class);
+                                    intent.putExtra("admin_username",admin_username);
+                                    intent.putExtra("offline_online","ONLINE");
+                                    intent.putExtra("from_file","false");
+                                    intent.putExtra("uuid",uuid);
                                     startActivity(intent);
                                     finish();
                                 }
                             });
 
-
-
-
-
-
-
-        }
+           }
         // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         if (fromAccount == 2) {
-            Toast.makeText(CheckAdmin.this, "2", Toast.LENGTH_SHORT).show();
             final String admin_username=getIntent().getExtras().getString("admin_username");
 
             username = getIntent().getExtras().getString("username_admin_modify2");
@@ -244,7 +243,7 @@ public class CheckAdmin extends AppCompatActivity {
             salaryview.setText(salary);
 
             final Button logout =findViewById(R.id.admin_logout);
-            logout.setText("Register");
+            logout.setText("Edit User");
 
             modify.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -344,6 +343,22 @@ public class CheckAdmin extends AppCompatActivity {
                                 statement.setString(4,salary);
                                 statement.setString(5,statue);
                                 statement.execute();
+                                String get_uuid = "{CALL user_page(?,?,?,?)}";
+                                statement = dbconnect.dbconnection().prepareCall(get_uuid);
+                                statement.setString(1,username.toLowerCase());
+                                statement.registerOutParameter(2,Types.VARCHAR);
+                                statement.registerOutParameter(3,Types.VARCHAR);
+                                statement.registerOutParameter(4,Types.VARCHAR);
+                                statement.execute();
+                                String uuid_user=statement.getString(2);
+                                String sqlquery=("{CALL put_in_journal(?,?,?,?)}");
+                                statement=dbconnect.dbconnection().prepareCall(sqlquery);
+                                Log.e("uuid",String.valueOf(admin_uuid));
+                                statement.setString(1,admin_uuid);
+                                statement.setString(2,"UPDATE");
+                                statement.setString(3,uuid_user);
+                                statement.setString(4,"");
+                                statement.execute();
                             } catch (NoSuchAlgorithmException | SQLException e) {
 
                                 e.printStackTrace();
@@ -354,6 +369,10 @@ public class CheckAdmin extends AppCompatActivity {
                                     Toast.makeText(CheckAdmin.this, "Successful Update", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getApplicationContext(), AdminPage.class);
                                     intent.putExtra("admin_username",admin_username);
+                                    intent.putExtra("offline_online","ONLINE");
+                                    intent.putExtra("from_file","false");
+                                    intent.putExtra("uuid",uuid);
+
                                     startActivity(intent);
                                     finish();
                                 }
@@ -373,6 +392,7 @@ public class CheckAdmin extends AppCompatActivity {
             email = getIntent().getExtras().getString("email_modify");
             salary = getIntent().getExtras().getString("salary_modify");
             statue = getIntent().getExtras().getString("statue_modify");
+
             confim_update = findViewById(R.id.confim_update);
             usernameview = (EditText) findViewById(R.id.usernameview);
             usernameview.setEnabled(false);
@@ -398,42 +418,79 @@ public class CheckAdmin extends AppCompatActivity {
             emailview.setText(emailview.getText().toString() + email);
             salaryview.setText(salaryview.getText().toString() + salary);
             final Button logout = (Button) findViewById(R.id.admin_logout);
+            final String finalOffline_or_online = offline_or_online;
             logout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss a");
-                            String date = sdf.format(new Date());
-                            try {
-                                dbconnect dbconnect=null;
-                                String insert_sqlquery="{CALL insert_newuser(?,?,?,?,?,?)}";
-                                CallableStatement statement=dbconnect.dbconnection().prepareCall(insert_sqlquery);
-                                statement.setString(1,username.toLowerCase());
-                                statement.setString(2,md5(password));
-                                statement.setString(3,email.toLowerCase());
-                                statement.setString(4,salary);
-                                statement.setString(5,statue);
-                                statement.setString(6,date);
-                                statement.execute();
-
-
-                            } catch (NoSuchAlgorithmException | SQLException  e) {
-                                e.printStackTrace();
-                            }
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(CheckAdmin.this, "Successful Registration", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getApplicationContext(), AdminPage.class);
-                                    intent.putExtra("admin_username",admin_username);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            });
+                    if (finalOffline_or_online.equals("OFFLINE")) {
+                        Sqlite sqlite=new Sqlite(CheckAdmin.this);
+                        String uuid=UUID.randomUUID().toString();
+                        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");
+                        String date = sdf.format(new Date());
+                        try {
+                            sqlite.insert_admin_users(uuid,username,md5(password),email,salary,statue,date);
+                        } catch (NoSuchAlgorithmException e) {
+                            e.printStackTrace();
                         }
-                    }).start();
+                        Toast.makeText(CheckAdmin.this, "Successful Update", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), AdminPage.class);
+                        intent.putExtra("admin_username",admin_username);
+                        intent.putExtra("offline_online","OFFLINE");
+                        intent.putExtra("from_file","false");
+                        startActivity(intent);
+                        finish();
+                    }
+                    else {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");
+                                String date = sdf.format(new Date());
+                                try {
+                                    dbconnect dbconnect = null;
+                                    String insert_sqlquery = "{CALL insert_newuser(?,?,?,?,?,?)}";
+                                    CallableStatement statement = dbconnect.dbconnection().prepareCall(insert_sqlquery);
+                                    statement.setString(1, username.toLowerCase());
+                                    statement.setString(2, md5(password));
+                                    statement.setString(3, email.toLowerCase());
+                                    statement.setString(4, salary);
+                                    statement.setString(5, statue);
+                                    statement.setString(6, date);
+                                    statement.execute();
+                                    String get_uuid = "{CALL user_page(?,?,?,?)}";
+                                    statement = dbconnect.dbconnection().prepareCall(get_uuid);
+                                    statement.setString(1,username.toLowerCase());
+                                    statement.registerOutParameter(2,Types.VARCHAR);
+                                    statement.registerOutParameter(3,Types.VARCHAR);
+                                    statement.registerOutParameter(4,Types.VARCHAR);
+                                    statement.execute();
+                                    String uuid_user=statement.getString(2);
+                                    String sqlquery=("{CALL put_in_journal(?,?,?,?)}");
+                                    statement=dbconnect.dbconnection().prepareCall(sqlquery);
+                                    statement.setString(1,uuid);
+                                    statement.setString(2,"INSERT");
+                                    statement.setString(3,uuid_user);
+                                    statement.setString(4,"");
+                                    statement.execute();
+
+                                } catch (NoSuchAlgorithmException | SQLException e) {
+                                    e.printStackTrace();
+                                }
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(CheckAdmin.this, "Successful Registration", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(getApplicationContext(), AdminPage.class);
+                                        intent.putExtra("admin_username", admin_username);
+                                        intent.putExtra("offline_online","ONLINE");
+                                        intent.putExtra("from_file","false");
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                });
+                            }
+                        }).start();
+                    }
                 }
             });
             modify.setOnClickListener(new View.OnClickListener() {
@@ -482,7 +539,6 @@ public class CheckAdmin extends AppCompatActivity {
                     password2view.setError("2nd Password mismatch 1st Password");
                 }
                 if(usernameview.getText().toString().trim().length() > 0 && passwordview.getText().toString().trim().length() > 0 && password2view.getText().toString().trim().length() > 0 && emailview.getText().toString().trim().length() > 0 &&  salaryview.getText().toString().trim().length() > 0 && passwordview.getText().toString().equals(password2view.getText().toString()) ){
-
                     char[] checkemail = emailview.getText().toString().toCharArray();
                     int i= 0;
                     boolean testingemail = false;
